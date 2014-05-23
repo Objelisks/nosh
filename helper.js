@@ -11,9 +11,9 @@ var customCommands = {
 
 function logError(msg) {
     return function(err) {
-        if(errorMap[err.code]) {
+        if(err && errorMap[err.code]) {
             console.log(msg + ': ' + errorMap[err.code]);
-        } else {
+        } else if(err && err.code) {
             console.log('Error: ' + err.code);
         }
     }

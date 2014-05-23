@@ -42,6 +42,25 @@ rl.on('SIGINT', function() {
 });
 rl.on('line', function(line) {
     if(line.length == 0) return;
+    // get all tokens
+    // parse separators
+    // convert to javascript
+    //
+    // var cmd = parse('a aargs | b bargs &');
+    //   var next;
+    //   var commands = line.trim().split(separators, separatorTokens);
+    //   var args = commands[0].trim().split(' ');
+    //   var command = args.shift();
+    //   var modifier = separatorTokens[0];
+    //   var runable = run(command, args);
+    //   if(pipeFlag) next.pipe(runable.stdin); pipeFlag = false;
+    //   switch(modifer)
+    //     |: next = runable.stdout; pipeFlag = true;
+    //     &: runable = runAsync(runable);
+    //     >: next = runable.stdout; pipeFileFlag = true;
+    //
+    // var cmd = run(a, aargs).pipe(runAsync(b, bargs)).then(setInterval(run(c, cargs), 1000));
+    // cmd();
     helper.runCommand(line, cont);
 });
 
