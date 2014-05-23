@@ -4,6 +4,7 @@ var os = require('os');
 var readline = require('readline');
 var child_process = require('child_process');
 
+process.title = 'nosh.js';
 process.stdin.setEncoding('utf8');
 process.stdin.setRawMode(true);
 var rl = readline.createInterface({
@@ -17,14 +18,22 @@ var keys = process.stdin.on('data', function(key) {
     }
 });
 
+function getUsername() {
+    if(os.platform() === 'win32') {
+        return process.env['USERNAME'];
+    } else {
+        return process.env['USER'];
+    }
+};
+
 function setPrompt() {
-    var user = process.env['USER'];
+    var user = getUsername();process.env['USER'];
     var now = new Date();
     var ampm = now.getHours() <= 11 ? 'AM' : 'PM';
     var time = (now.getHours()%12) + ':'
         + ('00' + now.getMinutes()).slice(-2) + '' + ampm;
     var git = '()';
-    rl.setPrompt(user + '@' + ' ' + time + ':' + git + '%');
+    rl.setPrompt(user + '@' + ' ' + time + ':' + git + '% ');
 };
 
 var n = 0;
@@ -49,6 +58,7 @@ function logError(cmd, callback) {
 
 var customCommands = {
     'cd' : function(path) { process.chdir(path); },
+    'pwd': function() { console.log(process.cwd()); },
 };
 /*rl.on('SIGINT', function() {
     console.log('nope');
