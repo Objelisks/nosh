@@ -1,10 +1,13 @@
 var os = require('os');
+var fs = require('fs');
 var child_process = require('child_process');
 
+var aliasLocation = './alias.json';
+var separators = ' |&';
 var errorMap = {
     'ENOENT' : "Command not found.",
 };
-var customCommands = {
+var builtInCmds = {
     'cd' : function(path) { process.chdir(path); },
     'pwd' : function() { console.log(process.cwd()); },
 };
@@ -17,6 +20,11 @@ function logError(msg) {
             console.log('Error: ' + err.code);
         }
     }
+}
+
+function getAliases() {
+    var alias = JSON.parse(fs.readFileSync(aliasLocation));
+    return alias;
 }
 
 var compose = exports.compose = function(fn, callback) {
@@ -38,12 +46,24 @@ exports.getUsername = function() {
     }
 };
 
+function run(cmd, args) {
+    
+}
+
+function parse(line) {
+    var aliases = getAliases();
+    return line.trim().split(' ').map(function(str) {
+        var mapping = aliases[str];
+        return mapping != undefined ? mapping : str;
+    }).join(' ');
+}
+
 exports.runCommand = function(line, callback) {
   callback = compose(commandEnd, callback);
-  var args = line.trim().split(' ');
+  var args = parse(line).split(' ');
   var cmd = args.shift();
-  if(customCommands[cmd]) {
-    customCommands[cmd].apply(null, args);
+  if(builtInCmds[cmd]) {
+    builtInCmds[cmd].apply(null, args);
     callback();
   } else {
     var child = child_process.spawn(cmd, args);

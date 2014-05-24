@@ -46,12 +46,13 @@ rl.on('line', function(line) {
     // parse separators
     // convert to javascript
     //
-    // var cmd = parse('a aargs | b bargs &');
+    //var cmd = parse('a aargs | b bargs &');
     //   var next;
     //   var commands = line.trim().split(separators, separatorTokens);
     //   var args = commands[0].trim().split(' ');
     //   var command = args.shift();
     //   var modifier = separatorTokens[0];
+    //   args.forEach(replaceIfAlias);
     //   var runable = run(command, args);
     //   if(pipeFlag) next.pipe(runable.stdin); pipeFlag = false;
     //   switch(modifer)
